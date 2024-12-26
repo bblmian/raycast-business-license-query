@@ -94,10 +94,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/business-license-query"
+    "url": "https://github.com/bblmian/raycast-business-license-query"
   },
   "bugs": {
-    "url": "https://github.com/yourusername/business-license-query/issues"
+    "url": "https://github.com/bblmian/raycast-business-license-query/issues"
   },
-  "homepage": "https://github.com/yourusername/business-license-query#readme"
+  "homepage": "https://github.com/bblmian/raycast-business-license-query#readme"
 }
