@@ -1,0 +1,103 @@
+{
+  "$schema": "https://www.raycast.com/schemas/extension.json",
+  "name": "business-license-query",
+  "title": "工商信息查询与核验",
+  "description": "批量查询工商注册信息并支持多种格式导出，支持企业名称与统一社会信用代码的核验",
+  "icon": "icon.png",
+  "author": "zhubo",
+  "categories": [
+    "Productivity",
+    "Data",
+    "Developer Tools"
+  ],
+  "license": "MIT",
+  "commands": [
+    {
+      "name": "index",
+      "title": "工商信息查询与核验",
+      "description": "批量查询和核验企业工商信息",
+      "mode": "view"
+    }
+  ],
+  "preferences": [
+    {
+      "name": "apiKey",
+      "type": "textfield",
+      "required": true,
+      "title": "API Key",
+      "description": "百度 API 的 API Key，在百度云控制台获取",
+      "placeholder": "请输入 API Key",
+      "link": "https://console.bce.baidu.com/"
+    },
+    {
+      "name": "secretKey",
+      "type": "textfield",
+      "required": true,
+      "title": "Secret Key",
+      "description": "百度 API 的 Secret Key，在百度云控制台获取",
+      "placeholder": "请输入 Secret Key",
+      "link": "https://console.bce.baidu.com/"
+    },
+    {
+      "name": "requestInterval",
+      "type": "textfield",
+      "required": false,
+      "title": "请求间隔",
+      "description": "两次请求之间的间隔时间（毫秒），建议不小于1000",
+      "placeholder": "1000"
+    },
+    {
+      "name": "maxConcurrent",
+      "type": "textfield",
+      "required": false,
+      "title": "最大并发数",
+      "description": "同时进行的最大请求数量，建议不超过5",
+      "placeholder": "5"
+    },
+    {
+      "name": "batchSize",
+      "type": "textfield",
+      "required": false,
+      "title": "批处理数量",
+      "description": "每批处理的企业数量，建议不超过10",
+      "placeholder": "10"
+    }
+  ],
+  "dependencies": {
+    "@raycast/api": "^1.65.1",
+    "axios": "^1.6.2",
+    "p-limit": "^3.1.0",
+    "react": "^18.2.0",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@types/react": "^18.2.45",
+    "@types/react-dom": "^18.0.6",
+    "typescript": "^5.3.3"
+  },
+  "scripts": {
+    "build": "ray build -e dist",
+    "dev": "ray develop",
+    "lint": "ray lint"
+  },
+  "keywords": [
+    "raycast",
+    "business",
+    "license",
+    "query",
+    "verification",
+    "工商",
+    "信息",
+    "查询",
+    "核验"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/business-license-query"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/business-license-query/issues"
+  },
+  "homepage": "https://github.com/yourusername/business-license-query#readme"
+}
