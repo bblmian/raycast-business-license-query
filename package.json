@@ -13,13 +13,13 @@
   "license": "MIT",
   "commands": [
     {
-      "name": "query",
+      "name": "business-query",
       "title": "工商信息查询",
       "description": "批量查询企业工商信息",
       "mode": "view"
     },
     {
-      "name": "verification",
+      "name": "business-verify",
       "title": "工商信息核验",
       "description": "批量核验企业名称与统一社会信用代码",
       "mode": "view"

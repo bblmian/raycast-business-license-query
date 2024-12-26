@@ -24,16 +24,16 @@ type ExtensionPreferences = {
 declare type Preferences = ExtensionPreferences
 
 declare namespace Preferences {
-  /** Preferences accessible in the `query` command */
-  export type Query = ExtensionPreferences & {}
-  /** Preferences accessible in the `verification` command */
-  export type Verification = ExtensionPreferences & {}
+  /** Preferences accessible in the `business-query` command */
+  export type BusinessQuery = ExtensionPreferences & {}
+  /** Preferences accessible in the `business-verify` command */
+  export type BusinessVerify = ExtensionPreferences & {}
 }
 
 declare namespace Arguments {
-  /** Arguments passed to the `query` command */
-  export type Query = {}
-  /** Arguments passed to the `verification` command */
-  export type Verification = {}
+  /** Arguments passed to the `business-query` command */
+  export type BusinessQuery = {}
+  /** Arguments passed to the `business-verify` command */
+  export type BusinessVerify = {}
 }
 
