@@ -4,7 +4,7 @@
   "title": "工商信息查询与核验",
   "description": "批量查询工商注册信息并支持多种格式导出，支持企业名称与统一社会信用代码的核验",
   "icon": "extension_icon.png",
-  "author": "@bblmian",
+  "author": "bblmian",
   "categories": [
     "Productivity",
     "Data",
