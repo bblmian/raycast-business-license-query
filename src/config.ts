@@ -17,4 +17,4 @@ export const getConfig = (): Preferences => {
     maxConcurrent: preferences.maxConcurrent || "5", // 默认最大并发5个请求
     batchSize: preferences.batchSize || "20", // 默认每批20个
   };
-}; 
+};

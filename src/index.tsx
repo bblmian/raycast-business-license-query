@@ -19,10 +19,7 @@ export default function Command(): React.ReactElement {
         subtitle="批量查询企业工商信息"
         actions={
           <ActionPanel>
-            <Action.Push
-              title="打开查询"
-              target={<QueryCommand />}
-            />
+            <Action.Push title="打开查询" target={<QueryCommand />} />
           </ActionPanel>
         }
       />
@@ -32,13 +29,10 @@ export default function Command(): React.ReactElement {
         subtitle="批量核验企业名称与统一社会信用代码"
         actions={
           <ActionPanel>
-            <Action.Push
-              title="打开核验"
-              target={<VerificationCommand />}
-            />
+            <Action.Push title="打开核验" target={<VerificationCommand />} />
           </ActionPanel>
         }
       />
     </List>
   );
-} 
+}

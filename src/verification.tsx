@@ -1,11 +1,11 @@
 import { ActionPanel, Action, Form, showToast, Toast, Detail, Clipboard, open } from "@raycast/api";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import * as XLSX from 'xlsx';
+import * as XLSX from "xlsx";
 import { getConfig } from "./config";
 import * as fs from "fs";
 import * as path from "path";
-import pLimit from 'p-limit';
+import pLimit from "p-limit";
 
 interface FormValues {
   input: string;
@@ -62,9 +62,9 @@ export default function VerificationCommand(): React.ReactElement {
       showToast({
         style: Toast.Style.Failure,
         title: "请先配置API密钥",
-        message: "按 ⌘ + , 打开设置，填写API Key和Secret Key"
+        message: "按 ⌘ + , 打开设置，填写API Key和Secret Key",
       });
-      
+
       // 打开扩展设置
       open("raycast://extensions/zhubo/business-license-query/preferences");
     }
@@ -77,28 +77,33 @@ export default function VerificationCommand(): React.ReactElement {
     }
   };
 
-  const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+  const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
   // 解析输入文本
   const parseInput = (input: string): CompanyPair[] => {
     if (!input) return [];
-    
-    const lines = input.split(/\n/).filter(line => line.trim());
-    return lines.map(line => {
-      const [company, regnum] = line.split(/\t/).map(item => item.trim());
+
+    const lines = input.split(/\n/).filter((line) => line.trim());
+    return lines.map((line) => {
+      const [company, regnum] = line.split(/\t/).map((item) => item.trim());
       return { company, regnum };
     });
   };
 
   // 解析Excel文件
-  const parseExcelFile = async (filePath: string, sheetName: string, companyCol: string, regnumCol: string): Promise<CompanyPair[]> => {
+  const parseExcelFile = async (
+    filePath: string,
+    sheetName: string,
+    companyCol: string,
+    regnumCol: string
+  ): Promise<CompanyPair[]> => {
     const workbook = XLSX.readFile(filePath);
     const sheet = workbook.Sheets[sheetName];
     const data = XLSX.utils.sheet_to_json<Record<string, string>>(sheet);
-    
-    return data.map(row => ({
-      company: String(row[companyCol] || ''),
-      regnum: String(row[regnumCol] || '')
+
+    return data.map((row) => ({
+      company: String(row[companyCol] || ""),
+      regnum: String(row[regnumCol] || ""),
     }));
   };
 
@@ -122,9 +127,9 @@ export default function VerificationCommand(): React.ReactElement {
     const params = {
       grant_type: "client_credentials",
       client_id: config.apiKey,
-      client_secret: config.secretKey
+      client_secret: config.secretKey,
     };
-    
+
     try {
       const response = await axios.post(url, null, { params });
       return response.data.access_token;
@@ -137,19 +142,19 @@ export default function VerificationCommand(): React.ReactElement {
   async function verifyCompanyInfo(company: string, regnum: string): Promise<VerificationResult> {
     const accessToken = await getAccessToken();
     const url = `https://aip.baidubce.com/rest/2.0/ocr/v1/two_factors_verification?access_token=${accessToken}`;
-    
+
     const headers = {
-      'Content-Type': 'application/x-www-form-urlencoded',
-      'Accept': 'application/json'
+      "Content-Type": "application/x-www-form-urlencoded",
+      Accept: "application/json",
     };
 
     const data = new URLSearchParams();
-    data.append('company', company);
-    data.append('regnum', regnum);
+    data.append("company", company);
+    data.append("regnum", regnum);
 
     try {
       const response = await axios.post<BaiduAPIResponse>(url, data, { headers });
-      
+
       if (response.data.error_code) {
         return {
           company,
@@ -157,22 +162,22 @@ export default function VerificationCommand(): React.ReactElement {
           verifyResult: false,
           companyMatch: false,
           regnumMatch: false,
-          error: `错误代码: ${response.data.error_code}, 错误信息: ${response.data.error_msg}`
+          error: `错误代码: ${response.data.error_code}, 错误信息: ${response.data.error_msg}`,
         };
       }
 
       const result = response.data.words_result || {
         verifyresult: "0",
         companymatch: "0",
-        regnummatch: "0"
+        regnummatch: "0",
       };
-      
+
       return {
         company,
         regnum,
         verifyResult: result.verifyresult === "1",
         companyMatch: result.companymatch === "1",
-        regnumMatch: result.regnummatch === "1"
+        regnumMatch: result.regnummatch === "1",
       };
     } catch (error) {
       console.error("核验失败:", error);
@@ -182,7 +187,7 @@ export default function VerificationCommand(): React.ReactElement {
         verifyResult: false,
         companyMatch: false,
         regnumMatch: false,
-        error: error instanceof Error ? error.message : String(error)
+        error: error instanceof Error ? error.message : String(error),
       };
     }
   }
@@ -197,12 +202,12 @@ export default function VerificationCommand(): React.ReactElement {
   ): Promise<VerificationResult[]> => {
     const endIndex = Math.min(startIndex + batchSize, pairs.length);
     const batch = pairs.slice(startIndex, endIndex);
-    
+
     // 显示处理进度
     showToast({
       style: Toast.Style.Animated,
       title: `批次进度: ${Math.floor((startIndex / totalSize) * 100)}%`,
-      message: `处理批次 ${Math.floor(startIndex / batchSize) + 1}/${Math.ceil(totalSize / batchSize)}`
+      message: `处理批次 ${Math.floor(startIndex / batchSize) + 1}/${Math.ceil(totalSize / batchSize)}`,
     });
 
     // 并发处理当前批次，确保QPS不超过10
@@ -214,13 +219,13 @@ export default function VerificationCommand(): React.ReactElement {
           showToast({
             style: Toast.Style.Animated,
             title: `总进度: ${Math.floor(((startIndex + index + 1) / totalSize) * 100)}%`,
-            message: `核验: ${pair.company}`
+            message: `核验: ${pair.company}`,
           });
           return result;
         } catch (error) {
           console.error(`核验失败: ${pair.company}`, error);
           // 如果是请求过快的错误，等待更长时间后重试
-          if (error instanceof Error && error.message.includes('请求过快')) {
+          if (error instanceof Error && error.message.includes("请求过快")) {
             await sleep(2000); // 等待2秒后重试
             return verifyCompanyInfo(pair.company, pair.regnum);
           }
@@ -233,31 +238,36 @@ export default function VerificationCommand(): React.ReactElement {
   };
 
   function generateMarkdown(results: VerificationResult[]): string {
-    return results.map(result => {
-      if (result.error) {
-        return `
+    return results
+      .map((result) => {
+        if (result.error) {
+          return `
 ### ${result.company}
 - 统一社会信用代码: ${result.regnum}
 - 核验状态: 失败
 - 错误信息: ${result.error}
         `;
-      }
-      return `
+        }
+        return `
 ### ${result.company}
 - 统一社会信用代码: ${result.regnum}
-- 核验结果: ${result.verifyResult ? '通过' : '不通过'}
-- 企业名称匹配: ${result.companyMatch ? '是' : '否'}
-- 注册号匹配: ${result.regnumMatch ? '是' : '否'}
+- 核验结果: ${result.verifyResult ? "通过" : "不通过"}
+- 企业名称匹配: ${result.companyMatch ? "是" : "否"}
+- 注册号匹配: ${result.regnumMatch ? "是" : "否"}
       `;
-    }).join('\n');
+      })
+      .join("\n");
   }
 
   async function handleSubmit(values: FormValues): Promise<void> {
-    if ((!values.input.trim() && !values.dataFile) || (values.dataFile && (!values.sheetName || !values.companyColumn || !values.regnumColumn))) {
+    if (
+      (!values.input.trim() && !values.dataFile) ||
+      (values.dataFile && (!values.sheetName || !values.companyColumn || !values.regnumColumn))
+    ) {
       showToast({
         style: Toast.Style.Failure,
         title: "输入错误",
-        message: "请输入企业信息或选择数据文件并指定必要的列信息"
+        message: "请输入企业信息或选择数据文件并指定必要的列信息",
       });
       return;
     }
@@ -281,26 +291,20 @@ export default function VerificationCommand(): React.ReactElement {
       const maxConcurrent = Math.min(parseInt(config.maxConcurrent) || 5, 5);
       const requestInterval = Math.max(parseInt(config.requestInterval) || 1000, 1000);
       const limit = pLimit(maxConcurrent);
-      
+
       showToast({
         style: Toast.Style.Animated,
         title: "开始处理",
-        message: `共 ${pairs.length} 条数据，每批 ${batchSize} 条，最大并发 ${maxConcurrent}`
+        message: `共 ${pairs.length} 条数据，每批 ${batchSize} 条，最大并发 ${maxConcurrent}`,
       });
 
       const allResults: VerificationResult[] = [];
-      
+
       // 分批处理
       for (let i = 0; i < pairs.length; i += batchSize) {
-        const batchResults = await processBatch(
-          pairs,
-          i,
-          batchSize,
-          pairs.length,
-          limit
-        );
+        const batchResults = await processBatch(pairs, i, batchSize, pairs.length, limit);
         allResults.push(...batchResults);
-        
+
         // 批次间隔，确保不超过QPS限制
         if (i + batchSize < pairs.length) {
           await sleep(requestInterval);
@@ -316,77 +320,85 @@ export default function VerificationCommand(): React.ReactElement {
         showToast({
           style: Toast.Style.Success,
           title: "已复制到剪贴板",
-          message: "核验结果已复制为Markdown格式"
+          message: "核验结果已复制为Markdown格式",
         });
       }
 
-      if ((values.exportMd || values.exportXlsx) && values.exportPath && values.exportPath.length > 0) {
+      if (
+        (values.exportMd || values.exportXlsx) &&
+        values.exportPath &&
+        values.exportPath.length > 0
+      ) {
         const directory = values.exportPath[0];
-        const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+        const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
 
         if (values.exportMd) {
           const mdPath = path.join(directory, `企业信息核验结果_${timestamp}.md`);
           const markdown = generateMarkdown(allResults);
-          await exportToFile(markdown, mdPath, 'md');
+          await exportToFile(markdown, mdPath, "md");
         }
 
         if (values.exportXlsx) {
           const xlsxPath = path.join(directory, `企业信息核验结果_${timestamp}.xlsx`);
           const ws = XLSX.utils.json_to_sheet(
-            allResults.map(r => ({
-              '企业名称': r.company,
-              '统一社会信用代码': r.regnum,
-              '核验结果': r.verifyResult ? '通过' : '不通过',
-              '企业名称匹配': r.companyMatch ? '是' : '否',
-              '注册号匹配': r.regnumMatch ? '是' : '否',
-              '错误信息': r.error || ''
+            allResults.map((r) => ({
+              企业名称: r.company,
+              统一社会信用代码: r.regnum,
+              核验结果: r.verifyResult ? "通过" : "不通过",
+              企业名称匹配: r.companyMatch ? "是" : "否",
+              注册号匹配: r.regnumMatch ? "是" : "否",
+              错误信息: r.error || "",
             }))
           );
           const wb = XLSX.utils.book_new();
           XLSX.utils.book_append_sheet(wb, ws, "核验结果");
-          const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'buffer' });
-          await exportToFile(excelBuffer, xlsxPath, 'xlsx');
+          const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "buffer" });
+          await exportToFile(excelBuffer, xlsxPath, "xlsx");
         }
       }
 
       showToast({
         style: Toast.Style.Success,
         title: "核验完成",
-        message: `成功核验 ${allResults.length} 条记录`
+        message: `成功核验 ${allResults.length} 条记录`,
       });
     } catch (error) {
       showToast({
         style: Toast.Style.Failure,
         title: "核验失败",
-        message: error instanceof Error ? error.message : String(error)
+        message: error instanceof Error ? error.message : String(error),
       });
     } finally {
       setIsLoading(false);
     }
   }
 
-  async function exportToFile(content: string | Buffer, exportPath: string, type: 'md' | 'xlsx'): Promise<void> {
+  async function exportToFile(
+    content: string | Buffer,
+    exportPath: string,
+    type: "md" | "xlsx"
+  ): Promise<void> {
     try {
       const directory = path.dirname(exportPath);
-      
+
       if (!fs.existsSync(directory)) {
         fs.mkdirSync(directory, { recursive: true });
       }
-      
+
       fs.writeFileSync(exportPath, content);
-      
+
       showToast({
         style: Toast.Style.Success,
         title: "导出成功",
-        message: `文件已保存到: ${exportPath}`
+        message: `文件已保存到: ${exportPath}`,
       });
-      
+
       await open(directory);
     } catch (error) {
       showToast({
         style: Toast.Style.Failure,
         title: "导出失败",
-        message: error instanceof Error ? error.message : String(error)
+        message: error instanceof Error ? error.message : String(error),
       });
     }
   }
@@ -405,7 +417,7 @@ export default function VerificationCommand(): React.ReactElement {
         text="1. 文本输入：每行一对数据，企业名称和统一社会信用代码用Tab键分隔\n2. 文件导入：支持Excel文件(.xlsx)和CSV文件(.csv)"
       />
       <Form.Separator />
-      
+
       <Form.TextArea
         id="input"
         title="文本输入"
@@ -413,9 +425,9 @@ export default function VerificationCommand(): React.ReactElement {
         value={inputText}
         onChange={setInputText}
       />
-      
+
       <Form.Separator />
-      
+
       <Form.FilePicker
         id="dataFile"
         title="文件导入"
@@ -423,15 +435,11 @@ export default function VerificationCommand(): React.ReactElement {
         canChooseDirectories={false}
         onChange={handleFileSelect}
       />
-      
+
       {availableSheets.length > 0 && (
         <>
-          <Form.Dropdown 
-            id="sheetName" 
-            title="工作表"
-            placeholder="请选择要导入的工作表"
-          >
-            {availableSheets.map(sheet => (
+          <Form.Dropdown id="sheetName" title="工作表" placeholder="请选择要导入的工作表">
+            {availableSheets.map((sheet) => (
               <Form.Dropdown.Item key={sheet} value={sheet} title={sheet} />
             ))}
           </Form.Dropdown>
@@ -447,23 +455,19 @@ export default function VerificationCommand(): React.ReactElement {
           />
         </>
       )}
-      
+
       {previewLines.length > 0 && (
         <Form.Description
           title="数据预览（前5条）"
-          text={previewLines.map((pair, index) => 
-            `${index + 1}. ${pair.company} - ${pair.regnum}`
-          ).join('\n')}
+          text={previewLines
+            .map((pair, index) => `${index + 1}. ${pair.company} - ${pair.regnum}`)
+            .join("\n")}
         />
       )}
-      
+
       <Form.Separator />
-      
-      <Form.Checkbox
-        id="copyToClipboard"
-        label="复制到剪贴板"
-        defaultValue={true}
-      />
+
+      <Form.Checkbox id="copyToClipboard" label="复制到剪贴板" defaultValue={true} />
       <Form.Checkbox
         id="exportMd"
         label="导出为Markdown文件"
@@ -485,4 +489,4 @@ export default function VerificationCommand(): React.ReactElement {
       )}
     </Form>
   );
-} 
+}
