@@ -24,16 +24,16 @@ type ExtensionPreferences = {
 declare type Preferences = ExtensionPreferences
 
 declare namespace Preferences {
-  /** Preferences accessible in the `business-license-query-information` command */
-  export type BusinessLicenseQueryInformation = ExtensionPreferences & {}
-  /** Preferences accessible in the `business-license-verify-information` command */
-  export type BusinessLicenseVerifyInformation = ExtensionPreferences & {}
+  /** Preferences accessible in the `business-license-query-information-search` command */
+  export type BusinessLicenseQueryInformationSearch = ExtensionPreferences & {}
+  /** Preferences accessible in the `business-license-verify-information-check` command */
+  export type BusinessLicenseVerifyInformationCheck = ExtensionPreferences & {}
 }
 
 declare namespace Arguments {
-  /** Arguments passed to the `business-license-query-information` command */
-  export type BusinessLicenseQueryInformation = {}
-  /** Arguments passed to the `business-license-verify-information` command */
-  export type BusinessLicenseVerifyInformation = {}
+  /** Arguments passed to the `business-license-query-information-search` command */
+  export type BusinessLicenseQueryInformationSearch = {}
+  /** Arguments passed to the `business-license-verify-information-check` command */
+  export type BusinessLicenseVerifyInformationCheck = {}
 }
 
