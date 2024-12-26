@@ -1,7 +1,7 @@
 import { List, ActionPanel, Action } from "@raycast/api";
 import React, { useState } from "react";
-import QueryCommand from "./business-license-query-info";
-import VerificationCommand from "./business-license-verify-info";
+import QueryCommand from "./business-license-query-information";
+import VerificationCommand from "./business-license-verify-information";
 
 const Command: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState<string>("query");
