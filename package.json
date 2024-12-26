@@ -13,9 +13,15 @@
   "license": "MIT",
   "commands": [
     {
-      "name": "index",
-      "title": "工商信息查询与核验",
-      "description": "批量查询和核验企业工商信息",
+      "name": "business-query",
+      "title": "工商信息查询",
+      "description": "批量查询企业工商信息",
+      "mode": "view"
+    },
+    {
+      "name": "business-verification",
+      "title": "工商信息核验",
+      "description": "批量核验企业名称与统一社会信用代码",
       "mode": "view"
     }
   ],

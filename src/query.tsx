@@ -1,14 +1,23 @@
-import { ActionPanel, Action, Form, List } from "@raycast/api";
+import { ActionPanel, Action, Form } from "@raycast/api";
 import React from "react";
 
-interface QueryFormProps {
-  inputText: string;
-  setInputText: (text: string) => void;
-}
+export default function Command(): JSX.Element {
+  const [isLoading] = React.useState(false);
+  const [inputText, setInputText] = React.useState("");
 
-function QueryForm({ inputText, setInputText }: QueryFormProps) {
+  const handleSubmit = () => {
+    // TODO: 实现查询逻辑
+  };
+
   return (
-    <Form>
+    <Form
+      isLoading={isLoading}
+      actions={
+        <ActionPanel>
+          <Action.SubmitForm title="查询" onSubmit={handleSubmit} />
+        </ActionPanel>
+      }
+    >
       <Form.TextArea
         id="input"
         title="输入企业名称"
@@ -17,26 +26,5 @@ function QueryForm({ inputText, setInputText }: QueryFormProps) {
         onChange={setInputText}
       />
     </Form>
-  );
-}
-
-export default function Command() {
-  const [isLoading] = React.useState(false);
-  const [inputText, setInputText] = React.useState("");
-
-  return (
-    <List isLoading={isLoading}>
-      <List.Item
-        title="工商信息查询"
-        actions={
-          <ActionPanel>
-            <Action.Push
-              title="查询"
-              target={<QueryForm inputText={inputText} setInputText={setInputText} />}
-            />
-          </ActionPanel>
-        }
-      />
-    </List>
   );
 }
