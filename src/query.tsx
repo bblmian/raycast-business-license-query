@@ -1,7 +1,7 @@
 import { ActionPanel, Action, Form } from "@raycast/api";
 import React from "react";
 
-export default function Command(): JSX.Element {
+export default function Command() {
   const [isLoading] = React.useState(false);
   const [inputText, setInputText] = React.useState("");
 

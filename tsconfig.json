@@ -11,6 +11,10 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "jsx": "react-jsx",
-    "types": ["node", "@raycast/api"]
+    "types": ["node", "@raycast/api"],
+    "baseUrl": ".",
+    "paths": {
+      "*": ["node_modules/*"]
+    }
   }
 } 
