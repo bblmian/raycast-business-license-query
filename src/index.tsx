@@ -1,9 +1,9 @@
 import { List, ActionPanel, Action } from "@raycast/api";
 import React, { useState } from "react";
-import QueryCommand from "./query";
-import VerificationCommand from "./verification";
+import QueryCommand from "./business-license-query-info";
+import VerificationCommand from "./business-license-verify-info";
 
-export default function Command(): React.ReactElement {
+const Command: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState<string>("query");
 
   return (
@@ -11,7 +11,7 @@ export default function Command(): React.ReactElement {
       navigationTitle="工商信息查询与核验"
       searchBarPlaceholder="选择功能"
       selectedItemId={selectedTab}
-      onSelectionChange={(id) => setSelectedTab(id || "query")}
+      onSelectionChange={(id: string | null) => setSelectedTab(id || "query")}
     >
       <List.Item
         id="query"
@@ -35,4 +35,6 @@ export default function Command(): React.ReactElement {
       />
     </List>
   );
-}
+};
+
+export default Command;

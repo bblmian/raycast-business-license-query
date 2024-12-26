@@ -10,8 +10,8 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "jsx": "react-jsx",
-    "types": ["node", "@raycast/api"],
+    "jsx": "react",
+    "types": ["node", "@raycast/api", "react"],
     "baseUrl": ".",
     "paths": {
       "*": ["node_modules/*"]
@@ -20,6 +20,8 @@
     "noImplicitThis": true,
     "strictNullChecks": true,
     "allowJs": true,
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "jsxFactory": "React.createElement",
+    "jsxFragmentFactory": "React.Fragment"
   }
 } 

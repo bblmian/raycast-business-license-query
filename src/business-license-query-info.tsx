@@ -6,7 +6,7 @@ interface FormValues {
   input: string;
 }
 
-export default function Command(): JSX.Element {
+const Command: React.FC = () => {
   const [isLoading, setIsLoading] = React.useState(false);
   const [inputText, setInputText] = React.useState("");
 
@@ -14,7 +14,7 @@ export default function Command(): JSX.Element {
     try {
       setIsLoading(true);
       const config = getConfig();
-      
+
       if (!config.apiKey || !config.secretKey) {
         await showToast({
           style: Toast.Style.Failure,
@@ -74,4 +74,6 @@ export default function Command(): JSX.Element {
       />
     </Form>
   );
-}
+};
+
+export default Command;
