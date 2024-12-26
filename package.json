@@ -103,5 +103,8 @@
   "bugs": {
     "url": "https://github.com/bblmian/raycast-business-license-query/issues"
   },
-  "homepage": "https://github.com/bblmian/raycast-business-license-query#readme"
+  "homepage": "https://github.com/bblmian/raycast-business-license-query#readme",
+  "@raycast/api": {
+    "apiVersion": "1.88.4"
+  }
 }
