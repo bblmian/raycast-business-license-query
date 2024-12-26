@@ -11,8 +11,8 @@ export interface Preferences {
 export const getConfig = (): Preferences => {
   const preferences = getPreferenceValues<Preferences>();
   return {
-    apiKey: preferences.apiKey || "U77d9bfRageecnWNdL2RlTd8",
-    secretKey: preferences.secretKey || "euFeABsBINwRlyQreL5ku6ac4aJ6r0jw",
+    apiKey: preferences.apiKey,
+    secretKey: preferences.secretKey,
     requestInterval: preferences.requestInterval || "1000", // 默认1秒
     maxConcurrent: preferences.maxConcurrent || "5", // 默认最大并发5个请求
     batchSize: preferences.batchSize || "20", // 默认每批20个
