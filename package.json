@@ -1,5 +1,8 @@
 {
   "$schema": "https://www.raycast.com/schemas/extension.json",
+  "@raycast/api": {
+    "apiVersion": "1.88.4"
+  },
   "name": "business-license-query-verification",
   "title": "工商信息查询与核验",
   "description": "批量查询工商注册信息并支持多种格式导出，支持企业名称与统一社会信用代码的核验",
@@ -13,9 +16,15 @@
   "license": "MIT",
   "commands": [
     {
-      "name": "index",
-      "title": "工商信息查询与核验",
-      "description": "批量查询工商注册信息并支持多种格式导出，支持企业名称与统一社会信用代码的核验",
+      "name": "business-license-query-information-search-data",
+      "title": "工商信息查询",
+      "description": "批量查询企业的工商注册信息，支持多个企业名称",
+      "mode": "view"
+    },
+    {
+      "name": "business-license-verify-information-check-data",
+      "title": "工商信息核验",
+      "description": "批量核验企业名称与统一社会信用代码的一致性",
       "mode": "view"
     }
   ],
@@ -103,8 +112,5 @@
   "bugs": {
     "url": "https://github.com/bblmian/raycast-business-license-query/issues"
   },
-  "homepage": "https://github.com/bblmian/raycast-business-license-query#readme",
-  "@raycast/api": {
-    "apiVersion": "1.88.4"
-  }
+  "homepage": "https://github.com/bblmian/raycast-business-license-query#readme"
 }
