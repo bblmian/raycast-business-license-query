@@ -1,40 +1,77 @@
-import { List, ActionPanel, Action } from "@raycast/api";
+import { List, ActionPanel, Action, showToast, Toast, getPreferenceValues, openExtensionPreferences, Icon } from "@raycast/api";
 import React, { useState } from "react";
-import QueryCommand from "./business-license-query-information-search-data";
-import VerificationCommand from "./business-license-verify-information-check-data";
+import { QueryView, VerifyView } from "./views";
 
-const Command: React.FC = () => {
+interface Preferences {
+  apiKey: string;
+  secretKey: string;
+}
+
+export default function Command() {
   const [selectedTab, setSelectedTab] = useState<string>("query");
+  const preferences = getPreferenceValues<Preferences>();
+
+  // Check if API credentials are configured
+  if (!preferences.apiKey || !preferences.secretKey) {
+    return (
+      <List>
+        <List.EmptyView
+          title="API Credentials Not Configured"
+          description="Please configure your API credentials in the extension preferences."
+          icon={Icon.Key}
+          actions={
+            <ActionPanel>
+              <Action
+                title="Open Extension Preferences"
+                icon={Icon.Gear}
+                onAction={openExtensionPreferences}
+              />
+            </ActionPanel>
+          }
+        />
+      </List>
+    );
+  }
 
   return (
     <List
-      navigationTitle="工商信息查询与核验"
-      searchBarPlaceholder="选择功能"
+      navigationTitle="Business Info Search"
+      searchBarPlaceholder="Select a function..."
       selectedItemId={selectedTab}
-      onSelectionChange={(id: string | null) => setSelectedTab(id || "query")}
+      onSelectionChange={id => id && setSelectedTab(id)}
     >
       <List.Item
         id="query"
-        title="工商信息查询"
-        subtitle="批量查询企业工商信息"
+        title="Query Business Info"
+        subtitle="Search for business information"
+        icon={Icon.MagnifyingGlass}
+        accessories={[{ icon: Icon.ChevronRight }]}
         actions={
           <ActionPanel>
-            <Action.Push title="打开查询" target={<QueryCommand />} />
+            <Action.Push
+              title="Open Query View"
+              target={<QueryView />}
+              icon={Icon.MagnifyingGlass}
+            />
           </ActionPanel>
         }
       />
       <List.Item
-        id="verification"
-        title="工商信息核验"
-        subtitle="批量核验企业名称与统一社会信用代码"
+        id="verify"
+        title="Verify Business Info"
+        subtitle="Verify business license information"
+        icon={Icon.CheckCircle}
+        accessories={[{ icon: Icon.ChevronRight }]}
         actions={
           <ActionPanel>
-            <Action.Push title="打开核验" target={<VerificationCommand />} />
+            <Action.Push
+              title="Open Verify View"
+              target={<VerifyView />}
+              icon={Icon.CheckCircle}
+            />
           </ActionPanel>
         }
       />
     </List>
   );
-};
-
-export default Command;
+}
